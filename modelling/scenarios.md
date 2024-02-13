@@ -7,7 +7,7 @@ ACTION: Player one moves their piece from the start field to the field where pla
 and moving it to player two's out.
 
 END: Player one's piece is now in the circle where player two's piece was, they still have three pieces in out. player 
-two's now has four pieces in out. It's now player two's turn.
+two's now has four pieces in out. It's now player two's turn, and they're about to roll.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ all their pieces in out. It's player one's turn, and they rolled a six.
 ACTION: Player one takes one of his pieces from out and puts it on his start field.
 
 END: Player one now has one piece in his starting field and three pieces in his out. Player two has all their pieces in
-out. It's now player two's turn.
+out. It's now player one's turn again, and they're about to roll.
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -31,4 +31,4 @@ There are also no pieces in their home yet. It's player one's turn, and they rol
 ACTION: Player takes his piece from the circle in front of his house and puts it on the last circle of his house.
 
 END: Player one now has a piece in the last circle of his house. Player two has all their pieces in out. It's now player
-two's turn.
+two's turn, and they're about to roll.
