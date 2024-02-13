@@ -11,7 +11,7 @@ two's now has four pieces in out. It's now player two's turn, and they're about 
 
 ------------------------------------------------------------------------------------------------------------------------
 
-TITLE: Piece is moved out of base
+TITLE: Piece is moved out of out
 
 START: Player one has all his pieces in out, there is also no other players piece in his start field. Player two has
 all their pieces in out. It's player one's turn, and they rolled a six.
