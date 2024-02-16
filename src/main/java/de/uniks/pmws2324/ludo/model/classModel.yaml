@@ -1,0 +1,295 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	outField 	field 	player 	start 	homeField 	piece 	game
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/main/java"
+  packageName: 	de.uniks.pmws2324.ludo.model
+  packageSrcFolder: 	"src/main/java/de/uniks/pmws2324/ludo/model"
+
+- outField: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	OutField
+  propertyStyle: 	Bean
+  roles: 	outField_player
+  superClass: 	field
+
+- field: 	org.fulib.classmodel.Clazz
+  attributes: 	field_x 	field_y
+  model: 	c
+  modified: 	false
+  name: 	Field
+  propertyStyle: 	Bean
+  roles: 	field_piece 	field_previous 	field_next
+  subClasses: 	outField 	start 	homeField
+
+- player: 	org.fulib.classmodel.Clazz
+  attributes: 	player_name
+  model: 	c
+  modified: 	false
+  name: 	Player
+  propertyStyle: 	Bean
+  roles: 	player_outFields 	player_start 	player_homeFields 	player_pieces 	player_game 	player_activeGame
+
+- start: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Start
+  propertyStyle: 	Bean
+  roles: 	start_player
+  superClass: 	field
+
+- homeField: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	HomeField
+  propertyStyle: 	Bean
+  roles: 	homeField_player
+  superClass: 	field
+
+- piece: 	org.fulib.classmodel.Clazz
+  attributes: 	piece_finished
+  model: 	c
+  modified: 	false
+  name: 	Piece
+  propertyStyle: 	Bean
+  roles: 	piece_owner 	piece_position
+
+- game: 	org.fulib.classmodel.Clazz
+  attributes: 	game_phase 	game_roll
+  model: 	c
+  modified: 	false
+  name: 	Game
+  propertyStyle: 	Bean
+  roles: 	game_players 	game_activePlayer
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- outField_player: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	outField
+  id: 	OutField_player
+  modified: 	false
+  name: 	player
+  other: 	player_outFields
+  propertyStyle: 	Bean
+
+- field_x: 	org.fulib.classmodel.Attribute
+  clazz: 	field
+  id: 	Field_x
+  modified: 	false
+  name: 	x
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- field_y: 	org.fulib.classmodel.Attribute
+  clazz: 	field
+  id: 	Field_y
+  modified: 	false
+  name: 	y
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- field_piece: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	field
+  id: 	Field_piece
+  modified: 	false
+  name: 	piece
+  other: 	piece_position
+  propertyStyle: 	Bean
+
+- field_previous: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	field
+  id: 	Field_previous
+  modified: 	false
+  name: 	previous
+  other: 	field_next
+  propertyStyle: 	Bean
+
+- field_next: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	field
+  id: 	Field_next
+  modified: 	false
+  name: 	next
+  other: 	field_previous
+  propertyStyle: 	Bean
+
+- player_name: 	org.fulib.classmodel.Attribute
+  clazz: 	player
+  id: 	Player_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- player_outFields: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	player
+  collectionType: 	c1
+  id: 	Player_outFields
+  modified: 	false
+  name: 	outFields
+  other: 	outField_player
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- player_start: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	player
+  id: 	Player_start
+  modified: 	false
+  name: 	start
+  other: 	start_player
+  propertyStyle: 	Bean
+
+- player_homeFields: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	player
+  collectionType: 	c1
+  id: 	Player_homeFields
+  modified: 	false
+  name: 	homeFields
+  other: 	homeField_player
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- player_pieces: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	player
+  collectionType: 	c1
+  id: 	Player_pieces
+  modified: 	false
+  name: 	pieces
+  other: 	piece_owner
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- player_game: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	player
+  id: 	Player_game
+  modified: 	false
+  name: 	game
+  other: 	game_players
+  propertyStyle: 	Bean
+
+- player_activeGame: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	player
+  id: 	Player_activeGame
+  modified: 	false
+  name: 	activeGame
+  other: 	game_activePlayer
+  propertyStyle: 	Bean
+
+- start_player: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	start
+  id: 	Start_player
+  modified: 	false
+  name: 	player
+  other: 	player_start
+  propertyStyle: 	Bean
+
+- homeField_player: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	homeField
+  id: 	HomeField_player
+  modified: 	false
+  name: 	player
+  other: 	player_homeFields
+  propertyStyle: 	Bean
+
+- piece_finished: 	org.fulib.classmodel.Attribute
+  clazz: 	piece
+  id: 	Piece_finished
+  modified: 	false
+  name: 	finished
+  propertyStyle: 	Bean
+  type: 	boolean
+  typeSignature: 	boolean
+
+- piece_owner: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	piece
+  id: 	Piece_owner
+  modified: 	false
+  name: 	owner
+  other: 	player_pieces
+  propertyStyle: 	Bean
+
+- piece_position: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	piece
+  id: 	Piece_position
+  modified: 	false
+  name: 	position
+  other: 	field_piece
+  propertyStyle: 	Bean
+
+- game_phase: 	org.fulib.classmodel.Attribute
+  clazz: 	game
+  id: 	Game_phase
+  modified: 	false
+  name: 	phase
+  propertyStyle: 	Bean
+  type: 	Phase
+  typeSignature: 	Phase
+
+- game_roll: 	org.fulib.classmodel.Attribute
+  clazz: 	game
+  id: 	Game_roll
+  modified: 	false
+  name: 	roll
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- game_players: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	game
+  collectionType: 	c1
+  id: 	Game_players
+  modified: 	false
+  name: 	players
+  other: 	player_game
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- game_activePlayer: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	game
+  id: 	Game_activePlayer
+  modified: 	false
+  name: 	activePlayer
+  other: 	player_activeGame
+  propertyStyle: 	Bean
+
