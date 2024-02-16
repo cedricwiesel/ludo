@@ -3,6 +3,7 @@ package de.uniks.pmws2324.ludo.controller;
 import de.uniks.pmws2324.ludo.App;
 import de.uniks.pmws2324.ludo.Main;
 import de.uniks.pmws2324.ludo.service.GameService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -35,6 +36,13 @@ public class SetupController extends Controller{
 
     @Override
     public Parent render() {
-        return null;
+        startButton.setOnAction(this::handleStart);
+        return this.parent;
+    }
+
+    private void handleStart(ActionEvent actionEvent) {
+        gameService.initGame(yellowPlayerField.getText(), greenPlayerField.getText(),
+                blackPlayerField.getText(), redPlayerField.getText());
+        app.showIngameView();
     }
 }
