@@ -41,8 +41,9 @@ public class SetupController extends Controller{
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        gameService.initGame(yellowPlayerField.getText(), greenPlayerField.getText(),
-                blackPlayerField.getText(), redPlayerField.getText());
-        app.showIngameView();
+        if (gameService.initGame(yellowPlayerField.getText(), greenPlayerField.getText(),
+                blackPlayerField.getText(), redPlayerField.getText())) {
+            app.showIngameView();
+        }
     }
 }
