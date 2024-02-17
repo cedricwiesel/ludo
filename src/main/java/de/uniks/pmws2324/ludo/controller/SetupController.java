@@ -13,10 +13,10 @@ import java.io.IOException;
 
 public class SetupController extends Controller{
     private Parent parent;
-    public TextField yellowPlayerField;
-    public TextField greenPlayerField;
-    public TextField blackPlayerField;
-    public TextField redPlayerField;
+    public TextField firstPlayerField;
+    public TextField secondPlayerField;
+    public TextField thirdPlayerField;
+    public TextField fourthPlayerField;
     public Button startButton;
 
     public SetupController(App app, GameService gameService) {
@@ -41,8 +41,8 @@ public class SetupController extends Controller{
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        if (gameService.initGame(yellowPlayerField.getText(), greenPlayerField.getText(),
-                blackPlayerField.getText(), redPlayerField.getText())) {
+        if (gameService.initGame(firstPlayerField.getText(), secondPlayerField.getText(),
+                thirdPlayerField.getText(), fourthPlayerField.getText())) {
             app.showIngameView();
         }
     }
