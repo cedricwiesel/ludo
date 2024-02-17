@@ -2,6 +2,7 @@ package de.uniks.pmws2324.ludo.controller;
 
 import de.uniks.pmws2324.ludo.App;
 import de.uniks.pmws2324.ludo.Main;
+import de.uniks.pmws2324.ludo.model.Phase;
 import de.uniks.pmws2324.ludo.service.GameService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +37,11 @@ public class IngameController extends Controller{
 
     @Override
     public Parent render() {
-        return null;
+        if (gameService.getGame().getPhase().equals(Phase.rolling)) {
+            activePlayerLabel.setText(gameService.getGame().getActivePlayer().getName() + " it's your turn to roll!");
+        } else {
+            activePlayerLabel.setText(gameService.getGame().getActivePlayer().getName() + ", now move your Piece");
+        }
+        return this.parent;
     }
 }
