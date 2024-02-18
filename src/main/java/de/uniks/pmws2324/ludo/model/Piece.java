@@ -6,10 +6,12 @@ public class Piece
    public static final String PROPERTY_FINISHED = "finished";
    public static final String PROPERTY_OWNER = "owner";
    public static final String PROPERTY_POSITION = "position";
+   public static final String PROPERTY_COLOR = "color";
    private boolean finished;
    private Player owner;
    private Field position;
    protected PropertyChangeSupport listeners;
+   private int color;
 
    public boolean isFinished()
    {
@@ -80,6 +82,24 @@ public class Piece
          value.setPiece(this);
       }
       this.firePropertyChange(PROPERTY_POSITION, oldValue, value);
+      return this;
+   }
+
+   public int getColor()
+   {
+      return this.color;
+   }
+
+   public Piece setColor(int value)
+   {
+      if (value == this.color)
+      {
+         return this;
+      }
+
+      final int oldValue = this.color;
+      this.color = value;
+      this.firePropertyChange(PROPERTY_COLOR, oldValue, value);
       return this;
    }
 

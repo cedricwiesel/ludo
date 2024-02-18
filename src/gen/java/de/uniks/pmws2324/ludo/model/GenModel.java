@@ -37,6 +37,7 @@ public class GenModel implements ClassModelDecorator {
 
     class Piece {
         boolean finished;
+        int color;
 
         @Link("pieces")
         Player owner;
