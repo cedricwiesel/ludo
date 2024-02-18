@@ -8,6 +8,7 @@
   packageSrcFolder: 	"src/main/java/de/uniks/pmws2324/ludo/model"
 
 - outField: 	org.fulib.classmodel.Clazz
+  attributes: 	outField_color
   model: 	c
   modified: 	false
   name: 	OutField
@@ -33,6 +34,7 @@
   roles: 	player_outFields 	player_start 	player_homeFields 	player_pieces 	player_game 	player_activeGame
 
 - start: 	org.fulib.classmodel.Clazz
+  attributes: 	start_color
   model: 	c
   modified: 	false
   name: 	Start
@@ -41,6 +43,7 @@
   superClass: 	field
 
 - homeField: 	org.fulib.classmodel.Clazz
+  attributes: 	homeField_color
   model: 	c
   modified: 	false
   name: 	HomeField
@@ -70,6 +73,15 @@
   itf: 	org.fulib.classmodel.CollectionInterface.List
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
+
+- outField_color: 	org.fulib.classmodel.Attribute
+  clazz: 	outField
+  id: 	OutField_color
+  modified: 	false
+  name: 	color
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
 
 - outField_player: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -204,6 +216,15 @@
   other: 	game_activePlayer
   propertyStyle: 	Bean
 
+- start_color: 	org.fulib.classmodel.Attribute
+  clazz: 	start
+  id: 	Start_color
+  modified: 	false
+  name: 	color
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
 - start_player: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
@@ -213,6 +234,15 @@
   name: 	player
   other: 	player_start
   propertyStyle: 	Bean
+
+- homeField_color: 	org.fulib.classmodel.Attribute
+  clazz: 	homeField
+  id: 	HomeField_color
+  modified: 	false
+  name: 	color
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
 
 - homeField_player: 	org.fulib.classmodel.AssocRole
   aggregation: 	false

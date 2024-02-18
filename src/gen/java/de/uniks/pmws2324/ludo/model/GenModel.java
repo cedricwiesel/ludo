@@ -68,16 +68,19 @@ public class GenModel implements ClassModelDecorator {
     }
 
     class HomeField extends Field {
+        int color;
         @Link("homeFields")
         Player player;
     }
 
     class Start extends Field {
+        int color;
         @Link("start")
         Player player;
     }
 
     class OutField extends Field {
+        int color;
         @Link("outFields")
         Player player;
     }
