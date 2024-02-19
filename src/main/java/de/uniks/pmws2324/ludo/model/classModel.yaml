@@ -60,7 +60,7 @@
   roles: 	piece_owner 	piece_position
 
 - game: 	org.fulib.classmodel.Clazz
-  attributes: 	game_phase 	game_roll
+  attributes: 	game_phase 	game_roll 	game_goAgain
   model: 	c
   modified: 	false
   name: 	Game
@@ -309,6 +309,15 @@
   propertyStyle: 	Bean
   type: 	int
   typeSignature: 	int
+
+- game_goAgain: 	org.fulib.classmodel.Attribute
+  clazz: 	game
+  id: 	Game_goAgain
+  modified: 	false
+  name: 	goAgain
+  propertyStyle: 	Bean
+  type: 	boolean
+  typeSignature: 	boolean
 
 - game_players: 	org.fulib.classmodel.AssocRole
   aggregation: 	false

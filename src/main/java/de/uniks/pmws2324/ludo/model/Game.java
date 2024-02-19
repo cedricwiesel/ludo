@@ -12,11 +12,13 @@ public class Game
    public static final String PROPERTY_ROLL = "roll";
    public static final String PROPERTY_PLAYERS = "players";
    public static final String PROPERTY_ACTIVE_PLAYER = "activePlayer";
+   public static final String PROPERTY_GO_AGAIN = "goAgain";
    private Phase phase;
    private int roll;
    private List<Player> players;
    private Player activePlayer;
    protected PropertyChangeSupport listeners;
+   private boolean goAgain;
 
    public Phase getPhase()
    {
@@ -144,6 +146,24 @@ public class Game
          value.setActiveGame(this);
       }
       this.firePropertyChange(PROPERTY_ACTIVE_PLAYER, oldValue, value);
+      return this;
+   }
+
+   public boolean isGoAgain()
+   {
+      return this.goAgain;
+   }
+
+   public Game setGoAgain(boolean value)
+   {
+      if (value == this.goAgain)
+      {
+         return this;
+      }
+
+      final boolean oldValue = this.goAgain;
+      this.goAgain = value;
+      this.firePropertyChange(PROPERTY_GO_AGAIN, oldValue, value);
       return this;
    }
 
