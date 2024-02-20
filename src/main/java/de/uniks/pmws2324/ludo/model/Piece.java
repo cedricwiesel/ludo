@@ -7,11 +7,13 @@ public class Piece
    public static final String PROPERTY_OWNER = "owner";
    public static final String PROPERTY_POSITION = "position";
    public static final String PROPERTY_COLOR = "color";
+   public static final String PROPERTY_HOVERED = "hovered";
    private boolean finished;
    private Player owner;
    private Field position;
    protected PropertyChangeSupport listeners;
    private int color;
+   private Game hovered;
 
    public boolean isFinished()
    {
@@ -103,6 +105,33 @@ public class Piece
       return this;
    }
 
+   public Game getHovered()
+   {
+      return this.hovered;
+   }
+
+   public Piece setHovered(Game value)
+   {
+      if (this.hovered == value)
+      {
+         return this;
+      }
+
+      final Game oldValue = this.hovered;
+      if (this.hovered != null)
+      {
+         this.hovered = null;
+         oldValue.setHoveredPiece(null);
+      }
+      this.hovered = value;
+      if (value != null)
+      {
+         value.setHoveredPiece(this);
+      }
+      this.firePropertyChange(PROPERTY_HOVERED, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -126,5 +155,6 @@ public class Piece
    {
       this.setOwner(null);
       this.setPosition(null);
+      this.setHovered(null);
    }
 }

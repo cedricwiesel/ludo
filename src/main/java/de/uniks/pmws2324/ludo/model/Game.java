@@ -13,12 +13,14 @@ public class Game
    public static final String PROPERTY_PLAYERS = "players";
    public static final String PROPERTY_ACTIVE_PLAYER = "activePlayer";
    public static final String PROPERTY_GO_AGAIN = "goAgain";
+   public static final String PROPERTY_HOVERED_PIECE = "hoveredPiece";
    private Phase phase;
    private int roll;
    private List<Player> players;
    private Player activePlayer;
    protected PropertyChangeSupport listeners;
    private boolean goAgain;
+   private Piece hoveredPiece;
 
    public Phase getPhase()
    {
@@ -167,6 +169,33 @@ public class Game
       return this;
    }
 
+   public Piece getHoveredPiece()
+   {
+      return this.hoveredPiece;
+   }
+
+   public Game setHoveredPiece(Piece value)
+   {
+      if (this.hoveredPiece == value)
+      {
+         return this;
+      }
+
+      final Piece oldValue = this.hoveredPiece;
+      if (this.hoveredPiece != null)
+      {
+         this.hoveredPiece = null;
+         oldValue.setHovered(null);
+      }
+      this.hoveredPiece = value;
+      if (value != null)
+      {
+         value.setHovered(this);
+      }
+      this.firePropertyChange(PROPERTY_HOVERED_PIECE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -190,5 +219,6 @@ public class Game
    {
       this.withoutPlayers(new ArrayList<>(this.getPlayers()));
       this.setActivePlayer(null);
+      this.setHoveredPiece(null);
    }
 }

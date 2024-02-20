@@ -13,12 +13,16 @@ public class GenModel implements ClassModelDecorator {
         @Type("Phase")
         Object phase;
         int roll;
+        boolean goAgain;
 
         @Link("game")
         List<Player> players;
 
         @Link ("activeGame")
         Player activePlayer;
+
+       @Link("hovered")
+        Piece hoveredPiece;
     }
 
     class Field {
@@ -44,6 +48,9 @@ public class GenModel implements ClassModelDecorator {
 
         @Link("piece")
         Field position;
+
+        @Link("hoveredPiece")
+        Game hovered;
     }
 
     class Player {

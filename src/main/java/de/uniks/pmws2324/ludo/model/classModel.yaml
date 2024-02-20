@@ -57,7 +57,7 @@
   modified: 	false
   name: 	Piece
   propertyStyle: 	Bean
-  roles: 	piece_owner 	piece_position
+  roles: 	piece_owner 	piece_position 	piece_hovered
 
 - game: 	org.fulib.classmodel.Clazz
   attributes: 	game_phase 	game_roll 	game_goAgain
@@ -65,7 +65,7 @@
   modified: 	false
   name: 	Game
   propertyStyle: 	Bean
-  roles: 	game_players 	game_activePlayer
+  roles: 	game_players 	game_activePlayer 	game_hoveredPiece
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -292,6 +292,16 @@
   other: 	field_piece
   propertyStyle: 	Bean
 
+- piece_hovered: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	piece
+  id: 	Piece_hovered
+  modified: 	false
+  name: 	hovered
+  other: 	game_hoveredPiece
+  propertyStyle: 	Bean
+
 - game_phase: 	org.fulib.classmodel.Attribute
   clazz: 	game
   id: 	Game_phase
@@ -339,5 +349,15 @@
   modified: 	false
   name: 	activePlayer
   other: 	player_activeGame
+  propertyStyle: 	Bean
+
+- game_hoveredPiece: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	game
+  id: 	Game_hoveredPiece
+  modified: 	false
+  name: 	hoveredPiece
+  other: 	piece_hovered
   propertyStyle: 	Bean
 
