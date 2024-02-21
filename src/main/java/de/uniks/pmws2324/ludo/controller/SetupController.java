@@ -41,8 +41,8 @@ public class SetupController extends Controller{
     }
 
     private void handleStart(ActionEvent actionEvent) {
-        if (gameService.initGame(firstPlayerField.getText(), secondPlayerField.getText(),
-                thirdPlayerField.getText(), fourthPlayerField.getText())) {
+        if (gameService.initGame(firstPlayerField.getText().trim(), secondPlayerField.getText().trim(),
+                thirdPlayerField.getText().trim(), fourthPlayerField.getText().trim())) {
             app.showIngameView();
         }
     }
