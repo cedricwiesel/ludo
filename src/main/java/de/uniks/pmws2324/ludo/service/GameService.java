@@ -46,7 +46,7 @@ public class GameService {
     public void findStartingPlayer(Player player) {
         game.setRoll(rnGenerator.nextInt(1, 7));
         preGameRolls.put(player, game.getRoll());
-        findNextPlayer();
+        setNextPlayer();
         if (preGameRolls.size() == players.size()) {
             int highest = 0;
             for (Map.Entry<Player, Integer> entry : preGameRolls.entrySet()) {
@@ -69,7 +69,7 @@ public class GameService {
             game.setPhase(Phase.movingPiece);
         } else if (!movedOut) {
             game.setGoAgain(false);
-            findNextPlayer();
+            setNextPlayer();
         }
     }
 
@@ -105,7 +105,7 @@ public class GameService {
                 game.setGoAgain(false);
             } else {
                 game.setPhase(Phase.rolling);
-                findNextPlayer();
+                setNextPlayer();
             }
             return true;
         } else {
@@ -114,7 +114,7 @@ public class GameService {
             if (game.isGoAgain()) {
                 game.setGoAgain(false);
             } else {
-                findNextPlayer();
+                setNextPlayer();
             }
             return true;
         }
@@ -334,7 +334,7 @@ public class GameService {
         }
     }
 
-    private void createOutsForPlayer(Player player, int color, int outX, int outY) {
+    public void createOutsForPlayer(Player player, int color, int outX, int outY) {
         if (player != null) {
             player.withOutFields(createOutField(color, outX + FIELD_OFFSET / 2, outY + FIELD_OFFSET / 2));
             player.withOutFields(createOutField(color, outX + FIELD_OFFSET / 2, outY - FIELD_OFFSET / 2));
@@ -378,7 +378,7 @@ public class GameService {
         }
     }
 
-    private void findNextPlayer() {
+    public void setNextPlayer() {
         int currentPlayerIndex = 0;
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).equals(game.getActivePlayer())) {
@@ -394,12 +394,15 @@ public class GameService {
 
     //----------------------------- GETTERS & SETTERS ---------------------------------
 
-    public void createGame(Player activePlayer, Player playerTwo) {
+    public void createGame(Player activePlayer, Player playerTwo, Player playerThree, Player playerFour) {
         this.game = new Game()
                 .setActivePlayer(activePlayer)
-                .withPlayers(activePlayer, playerTwo);
+                .withPlayers(activePlayer, playerTwo, playerThree, playerFour);
                 this.players.add(activePlayer);
-                this.players.add(activePlayer);
+                this.players.add(playerTwo);
+                this.players.add(playerThree);
+                this.players.add(playerFour);
+
     }
 
     public Game getGame() {

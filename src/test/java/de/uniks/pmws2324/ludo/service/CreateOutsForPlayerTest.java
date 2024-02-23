@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreateOutsForPlayerTest {
-    GameService gameService = new GameService(false);
+    GameService gameService = new GameService(true);
 
     @Test
     void greenOutTest() {

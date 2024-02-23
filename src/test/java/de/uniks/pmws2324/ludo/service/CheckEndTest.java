@@ -17,7 +17,7 @@ public class CheckEndTest {
         // create game to implement test scenario in
         Player playerOne = new Player();
         Player playerTwo = new Player();
-        gameService.createGame(playerOne, playerTwo);
+        gameService.createGame(playerOne, playerTwo, new Player(), new Player());
 
         // give both players their home fields
         playerOne.withHomeFields(new HomeField(), new HomeField(), new HomeField(), new HomeField());
@@ -37,9 +37,9 @@ public class CheckEndTest {
         // create game to implement test scenario in
         Player playerOne = new Player();
         Player playerTwo = new Player();
-        gameService.createGame(playerOne, playerTwo);
+        gameService.createGame(playerOne, playerTwo, new Player(), new Player());
 
-        // give both players their home fields
+        // give the two first players their home fields
         playerOne.withHomeFields(new HomeField(), new HomeField(), new HomeField(), new HomeField());
         playerTwo.withHomeFields(new HomeField(), new HomeField(), new HomeField(), new HomeField());
 
@@ -55,9 +55,9 @@ public class CheckEndTest {
         // create game to implement test scenario in
         Player playerOne = new Player();
         Player playerTwo = new Player();
-        gameService.createGame(playerOne, playerTwo);
+        gameService.createGame(playerOne, playerTwo, new Player(), new Player());
 
-        // give both players their home fields
+        // give the two first players their home fields
         playerOne.withHomeFields(new HomeField(), new HomeField(), new HomeField(), new HomeField());
         playerTwo.withHomeFields(new HomeField(), new HomeField(), new HomeField(), new HomeField());
 
