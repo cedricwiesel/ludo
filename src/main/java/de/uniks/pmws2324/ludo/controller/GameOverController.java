@@ -41,10 +41,10 @@ public class GameOverController extends Controller{
         List<Player> otherPlayers = gameService.findOtherPlayers(gameService.checkEnd());
         switch (otherPlayers.size()) {
             case 1:
-                loserLabel.setText(otherPlayers.get(0).getName() + " lost");
+                loserLabel.setText(otherPlayers.get(0).getName() + " lost.");
                 break;
             case 2:
-                loserLabel.setText(otherPlayers.get(0).getName() + " and " + otherPlayers.get(1).getName() + " lost");
+                loserLabel.setText(otherPlayers.get(0).getName() + " and " + otherPlayers.get(1).getName() + " lost.");
                 break;
             case 3:
                 loserLabel.setText(otherPlayers.get(0).getName() + ", " + otherPlayers.get(1).getName() + " and " +

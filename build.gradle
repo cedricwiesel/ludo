@@ -60,4 +60,6 @@ test {
             '--add-opens', 'javafx.graphics/com.sun.glass.ui=ALL-UNNAMED',
             '--add-opens', 'javafx.graphics/com.sun.javafx.application=ALL-UNNAMED',
     ]
+
+    systemProperty "testfx.robot.move_max_count", System.getProperty("testfx.robot.move_max_count")
 }

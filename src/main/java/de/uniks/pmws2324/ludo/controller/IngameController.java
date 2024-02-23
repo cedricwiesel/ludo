@@ -202,8 +202,8 @@ public class IngameController extends Controller {
 
 
     private void drawHover(Piece piece) {
-        if (gameService.findDestination(piece).getPiece() == null
-                || !gameService.findDestination(piece).getPiece().getOwner().equals(piece.getOwner())) {
+        if (gameService.findDestination(piece) != null && (gameService.findDestination(piece).getPiece() == null
+                || !gameService.findDestination(piece).getPiece().getOwner().equals(piece.getOwner()))) {
             int locationX = gameService.findDestination(piece).getX() + TARGET_OFFSET;
             int locationY = gameService.findDestination(piece).getY() + TARGET_OFFSET;
             context.setFill(Color.DARKBLUE);
@@ -246,6 +246,7 @@ public class IngameController extends Controller {
                 } else if (gameService.getGame().getHoveredPiece() != null
                         && gameService.getGame().getHoveredPiece().equals(piece)) {
                     position = gameService.findDestination(piece);
+                    if (position == null) {continue;}
                     if (position.getX() <= x && x <= position.getX() + FIELD_DIAMETER
                             && position.getY() <= y && y <= position.getY() + FIELD_DIAMETER) {
                         boolean moved = gameService.movePiece(piece);

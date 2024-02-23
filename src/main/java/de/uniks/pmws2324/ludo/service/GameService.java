@@ -18,7 +18,7 @@ public class GameService {
     public GameService(boolean testRun) {
         this.testRun = testRun;
         if (this.testRun) {
-            this.rnGenerator = new Random(1000);
+            this.rnGenerator = new Random(10);
         } else {
             this.rnGenerator = new Random();
         }

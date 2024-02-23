@@ -83,4 +83,8 @@ public class App extends Application {
             controller = null;
         }
     }
+
+    public GameService getGameService() {
+        return this.service;
+    }
 }
