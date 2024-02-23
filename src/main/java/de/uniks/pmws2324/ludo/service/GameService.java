@@ -8,11 +8,21 @@ import java.util.*;
 import static de.uniks.pmws2324.ludo.Constants.FIELD_OFFSET;
 
 public class GameService {
-    private final Random rnGenerator = new Random();
+    private final Random rnGenerator;
     Game game;
     List<Player> players = new ArrayList<>();
     List<Field> fields = new ArrayList<>();
     Map<Player, Integer> preGameRolls = new HashMap<>();
+    private final boolean testRun;
+
+    public GameService(boolean testRun) {
+        this.testRun = testRun;
+        if (this.testRun) {
+            this.rnGenerator = new Random(1000);
+        } else {
+            this.rnGenerator = new Random();
+        }
+    }
 
     public boolean initGame(String firstName, String secondName, String thirdName, String fourthName) {
         game = new Game();
@@ -382,7 +392,15 @@ public class GameService {
         }
     }
 
-    //----------------------------- GETTERS ---------------------------------
+    //----------------------------- GETTERS & SETTERS ---------------------------------
+
+    public void createGame(Player activePlayer, Player playerTwo) {
+        this.game = new Game()
+                .setActivePlayer(activePlayer)
+                .withPlayers(activePlayer, playerTwo);
+                this.players.add(activePlayer);
+                this.players.add(activePlayer);
+    }
 
     public Game getGame() {
         return this.game;

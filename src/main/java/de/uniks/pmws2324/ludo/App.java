@@ -11,13 +11,23 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class App extends Application {
+    private final boolean testRun;
     private Stage stage;
     private Controller controller;
     private GameService service;
+
+    public App() {
+        this.testRun = false;
+    }
+
+    public App(boolean testRun) {
+        this.testRun = testRun;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         stage = primaryStage;
-        service = new GameService();
+        service = new GameService(this.testRun);
 
         final Scene scene = new Scene(new Label("Loading..."));
         stage.setScene(scene);
