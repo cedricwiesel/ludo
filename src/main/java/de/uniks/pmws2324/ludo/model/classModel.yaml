@@ -52,7 +52,7 @@
   superClass: 	field
 
 - piece: 	org.fulib.classmodel.Clazz
-  attributes: 	piece_finished 	piece_color
+  attributes: 	piece_color
   model: 	c
   modified: 	false
   name: 	Piece
@@ -253,15 +253,6 @@
   name: 	player
   other: 	player_homeFields
   propertyStyle: 	Bean
-
-- piece_finished: 	org.fulib.classmodel.Attribute
-  clazz: 	piece
-  id: 	Piece_finished
-  modified: 	false
-  name: 	finished
-  propertyStyle: 	Bean
-  type: 	boolean
-  typeSignature: 	boolean
 
 - piece_color: 	org.fulib.classmodel.Attribute
   clazz: 	piece

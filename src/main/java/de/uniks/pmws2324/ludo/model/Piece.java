@@ -3,35 +3,15 @@ import java.beans.PropertyChangeSupport;
 
 public class Piece
 {
-   public static final String PROPERTY_FINISHED = "finished";
    public static final String PROPERTY_OWNER = "owner";
    public static final String PROPERTY_POSITION = "position";
    public static final String PROPERTY_COLOR = "color";
    public static final String PROPERTY_HOVERED = "hovered";
-   private boolean finished;
    private Player owner;
    private Field position;
    protected PropertyChangeSupport listeners;
    private int color;
    private Game hovered;
-
-   public boolean isFinished()
-   {
-      return this.finished;
-   }
-
-   public Piece setFinished(boolean value)
-   {
-      if (value == this.finished)
-      {
-         return this;
-      }
-
-      final boolean oldValue = this.finished;
-      this.finished = value;
-      this.firePropertyChange(PROPERTY_FINISHED, oldValue, value);
-      return this;
-   }
 
    public Player getOwner()
    {
