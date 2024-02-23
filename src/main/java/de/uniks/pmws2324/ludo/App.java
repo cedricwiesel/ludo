@@ -1,6 +1,7 @@
 package de.uniks.pmws2324.ludo;
 
 import de.uniks.pmws2324.ludo.controller.Controller;
+import de.uniks.pmws2324.ludo.controller.GameOverController;
 import de.uniks.pmws2324.ludo.controller.IngameController;
 import de.uniks.pmws2324.ludo.controller.SetupController;
 import de.uniks.pmws2324.ludo.service.GameService;
@@ -27,6 +28,8 @@ public class App extends Application {
     }
 
     public void showSetupView() {
+        stage.setWidth(600);
+        stage.setHeight(400);
         Controller setupController = new SetupController(this, service);
         show(setupController);
         stage.setTitle("Ludo - Setup");
@@ -38,6 +41,23 @@ public class App extends Application {
         stage.setHeight(720);
         show(ingameController);
         stage.setTitle("Ludo");
+    }
+
+    public void showGameOverView() {
+        Controller gameOverController = new GameOverController(this, service);
+        stage.setWidth(600);
+        stage.setHeight(400);
+        show(gameOverController);
+        stage.setTitle("Ludo - Game Over");
+    }
+
+    public void quit() {
+        stage.close();
+        try {
+            this.stop();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void show(Controller controller) {

@@ -3,14 +3,12 @@ package de.uniks.pmws2324.ludo.service;
 import de.uniks.pmws2324.ludo.Constants;
 import de.uniks.pmws2324.ludo.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static de.uniks.pmws2324.ludo.Constants.FIELD_OFFSET;
 
 public class GameService {
+    private final Random rnGenerator = new Random();
     Game game;
     List<Player> players = new ArrayList<>();
     List<Field> fields = new ArrayList<>();
@@ -35,8 +33,9 @@ public class GameService {
         return true;
     }
 
-    public void findStartingPlayer(int roll, Player player) {
-        preGameRolls.put(player, roll);
+    public void findStartingPlayer(Player player) {
+        game.setRoll(rnGenerator.nextInt(1, 7));
+        preGameRolls.put(player, game.getRoll());
         findNextPlayer();
         if (preGameRolls.size() == players.size()) {
             int highest = 0;
@@ -50,8 +49,117 @@ public class GameService {
         }
     }
 
+    public void roll(Player activePlayer) {
+        game.setRoll(rnGenerator.nextInt(1, 7));
+        boolean movedOut = false;
+        if (game.getRoll() == 6) {
+            movedOut = moveOut(activePlayer);
+        }
+        if (checkPossibleMove(activePlayer) && !movedOut) {
+            game.setPhase(Phase.movingPiece);
+        } else if (!movedOut) {
+            game.setGoAgain(false);
+            findNextPlayer();
+        }
+    }
+
+    private boolean moveOut(Player activePlayer) {
+        for (OutField outField : activePlayer.getOutFields()) {
+            if (outField.getPiece() != null) {
+                if (activePlayer.getStart().getPiece() == null) {
+                    outField.getPiece().setPosition(activePlayer.getStart());
+                    return true;
+                } else if (activePlayer.getStart().getPiece().getOwner() != activePlayer) {
+                    kick(activePlayer.getStart().getPiece());
+                    outField.getPiece().setPosition(activePlayer.getStart());
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean movePiece(Piece piece) {
+        Field destination = findDestination(piece);
+        if (game.getRoll() == 6) {
+            game.setGoAgain(true);
+        }
+        if (destination.getPiece() != null && destination.getPiece().getOwner().equals(piece.getOwner())) {
+            return false;
+        } else if (destination.getPiece() != null && !destination.getPiece().getOwner().equals(piece.getOwner())) {
+            kick(destination.getPiece());
+            piece.setPosition(destination);
+            if (game.isGoAgain()) {
+                game.setGoAgain(false);
+            } else {
+                game.setPhase(Phase.rolling);
+                findNextPlayer();
+            }
+            return true;
+        } else {
+            piece.setPosition(destination);
+            game.setPhase(Phase.rolling);
+            if (game.isGoAgain()) {
+                game.setGoAgain(false);
+            } else {
+                findNextPlayer();
+            }
+            return true;
+        }
+    }
+
+
+    public boolean checkEmptyOut(Player player) {
+        for (OutField outField : player.getOutFields()) {
+            if (outField.getPiece() != null) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     //------------------------ HELPERS ---------------------------------
+
+    private void kick(Piece piece) {
+        for (OutField outField : piece.getOwner().getOutFields()) {
+            if (outField.getPiece() == null) {
+                piece.setPosition(outField);
+            }
+        }
+    }
+
+    private boolean checkPossibleMove(Player player) {
+        for (Piece piece : player.getPieces()) {
+            if (piece.getPosition() instanceof OutField) {
+                continue;
+            } else {
+                if (findDestination(piece) != null && (findDestination(piece).getPiece() == null
+                        || !findDestination(piece).getPiece().getOwner().equals(player))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Field findDestination(Piece piece) {
+        Field destination = piece.getPosition();
+        for (int i = 0; i < game.getRoll(); i++) {
+            if (destination != null && destination.getNext() != null && destination.getNext() instanceof Start
+                    && ((Start) destination.getNext()).getPlayer() != null
+                    && ((Start) destination.getNext()).getPlayer().equals(piece.getOwner())) {
+                destination = piece.getOwner().getHomeFields().get(0);
+            } else if (destination != null && destination.getNext() != null){
+                destination = destination.getNext();
+            } else {
+                destination = null;
+            }
+        }
+        return destination;
+    }
+
     private void createPlayer(String playerName) {
         if (!playerName.isEmpty()) {
             Player player = new Player()
@@ -105,8 +213,7 @@ public class GameService {
             HomeField currentHomeField = new HomeField().setColor(2);
             currentHomeField.setX(previousX - i * FIELD_OFFSET);
             currentHomeField.setY(previousY);
-            if (players.size() > 2)
-                currentHomeField.setPlayer(players.get(3));
+            currentHomeField.setPlayer(players.get(1));
             if (previousSpecialField != null) {
                 currentHomeField.setPrevious(previousSpecialField);
             }
@@ -137,7 +244,8 @@ public class GameService {
             HomeField currentHomeField = new HomeField().setColor(3);
             currentHomeField.setX(previousX);
             currentHomeField.setY(previousY - i * FIELD_OFFSET);
-            currentHomeField.setPlayer(players.get(1));
+            if (players.size() > 2)
+                currentHomeField.setPlayer(players.get(2));
             if (previousSpecialField != null) {
                 currentHomeField.setPrevious(previousSpecialField);
             }
@@ -252,7 +360,6 @@ public class GameService {
             Player player = players.get(i - 1);
             for (OutField outField : player.getOutFields()) {
                 outField.setPiece(new Piece()
-                        .setFinished(false)
                         .setOwner(player)
                         .setPosition(outField)
                         .setColor(i)
@@ -283,5 +390,30 @@ public class GameService {
 
     public List<Field> getFields() {
         return this.fields;
+    }
+
+    public Player checkEnd() {
+        for (Player player : players) {
+            int finishdedPieces = 0;
+            for (Piece piece : player.getPieces()) {
+                if (piece.getPosition() instanceof HomeField) {
+                    finishdedPieces++;
+                }
+            }
+            if (finishdedPieces == 4) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public List<Player> findOtherPlayers(Player player) {
+        List<Player> list = new ArrayList<>();
+        for (Player gamePlayer : game.getPlayers()) {
+            if (gamePlayer != player) {
+                list.add(gamePlayer);
+            }
+        }
+        return list;
     }
 }

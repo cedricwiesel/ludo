@@ -28,7 +28,10 @@
             </VBox>
             <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="lastRoll" />
+                  <Label fx:id="lastRoll">
+                     <font>
+                        <Font size="64.0" />
+                     </font></Label>
                   <Button fx:id="rollButton" alignment="BOTTOM_CENTER" contentDisplay="TOP" mnemonicParsing="false" prefWidth="70.0" text="Roll">
                      <font>
                         <Font size="22.0" />
