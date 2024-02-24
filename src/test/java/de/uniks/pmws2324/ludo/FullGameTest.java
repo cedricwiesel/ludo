@@ -587,5 +587,16 @@ class FullGameTest extends ApplicationTest {
 
         verifyThat("#winnerLabel", hasText("Natascha won the game!"));
         verifyThat("#loserLabel", hasText("Clemens lost."));
+
+        clickOn("#newGameButton");
+
+        assertEquals("Ludo - Setup", stage.getTitle());
+
+        clickOn("#firstPlayerField").write("Clemens");
+        clickOn("#secondPlayerField").write("Natascha");
+
+        clickOn("#startButton");
+
+        assertEquals("Ludo", stage.getTitle());
     }
 }

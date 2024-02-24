@@ -43,9 +43,11 @@ public class GameOverController extends Controller{
             case 1:
                 loserLabel.setText(otherPlayers.get(0).getName() + " lost.");
                 break;
+
             case 2:
                 loserLabel.setText(otherPlayers.get(0).getName() + " and " + otherPlayers.get(1).getName() + " lost.");
                 break;
+
             case 3:
                 loserLabel.setText(otherPlayers.get(0).getName() + ", " + otherPlayers.get(1).getName() + " and " +
                         otherPlayers.get(2).getName() + " lost.");

@@ -22,9 +22,9 @@ public class IngameController extends Controller {
     private GraphicsContext context;
     private Parent parent;
     public StackPane stackPane;
-    public Label activePlayerLabel;
     public Canvas boardCanvas;
     public Button rollButton;
+    public Label activePlayerLabel;
     public Label lastRoll;
 
     public IngameController(App app, GameService gameService) {
@@ -62,16 +62,14 @@ public class IngameController extends Controller {
     private void drawMap() {
         //update top text
         clearCanvas();
+
         Player activePlayer = gameService.getGame().getActivePlayer();
+
         switch (this.gameService.getGame().getPhase()) {
             case rolling:
-                if (gameService.getGame().isGoAgain()) {
-                    activePlayerLabel.setText(activePlayer.getName() + " you rolled a 6, so it's your turn to roll " +
-                            "again!");
-                } else {
-                    activePlayerLabel.setText(activePlayer.getName() + " it's your turn to roll!");
-                }
+                activePlayerLabel.setText(activePlayer.getName() + " it's your turn to roll!");
                 break;
+
             case movingPiece:
                 activePlayer = gameService.getGame().getActivePlayer();
                 activePlayerLabel.setText(activePlayer.getName() + " you rolled a " + gameService.getGame().getRoll() +
@@ -82,67 +80,81 @@ public class IngameController extends Controller {
         //update board
         for (Field field : gameService.getFields()) {
             context.setStroke(Color.BLACK);
+
             if (field instanceof OutField) {
                 switch (((OutField) field).getColor()) {
                     case 1:
                         context.setFill(Color.GREEN);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 2:
                         context.setFill(Color.RED);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 3:
                         context.setFill(Color.BLACK);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 4:
                         context.setFill(Color.YELLOW);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
                 }
             }
+
             if (field instanceof Start) {
                 switch (((Start) field).getColor()) {
                     case 1:
                         context.setFill(Color.GREEN);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 2:
                         context.setFill(Color.RED);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 3:
                         context.setFill(Color.BLACK);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 4:
                         context.setFill(Color.YELLOW);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
                 }
             }
+
             if (field instanceof HomeField) {
                 switch (((HomeField) field).getColor()) {
                     case 1:
                         context.setFill(Color.GREEN);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 2:
                         context.setFill(Color.RED);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 3:
                         context.setFill(Color.BLACK);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
+
                     case 4:
                         context.setFill(Color.YELLOW);
                         context.fillOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
                         break;
                 }
             }
+
             context.strokeOval(field.getX(), field.getY(), FIELD_DIAMETER, FIELD_DIAMETER);
+
             if (field.getPiece() != null) {
                 switch (field.getPiece().getColor()) {
                     case 1:
@@ -153,6 +165,7 @@ public class IngameController extends Controller {
                                 PIECE_DIAMETER,
                                 PIECE_DIAMETER);
                         break;
+
                     case 2:
                         context.setFill(Color.RED);
                         context.fillOval(
@@ -161,6 +174,7 @@ public class IngameController extends Controller {
                                 PIECE_DIAMETER,
                                 PIECE_DIAMETER);
                         break;
+
                     case 3:
                         context.setFill(Color.BLACK);
                         context.fillOval(
@@ -172,6 +186,7 @@ public class IngameController extends Controller {
                             context.setStroke(Color.WHITE);
                         }
                         break;
+
                     case 4:
                         context.setFill(Color.YELLOW);
                         context.fillOval(
@@ -206,6 +221,7 @@ public class IngameController extends Controller {
                 || !gameService.findDestination(piece).getPiece().getOwner().equals(piece.getOwner()))) {
             int locationX = gameService.findDestination(piece).getX() + TARGET_OFFSET;
             int locationY = gameService.findDestination(piece).getY() + TARGET_OFFSET;
+
             context.setFill(Color.DARKBLUE);
             context.fillOval(locationX, locationY, TARGET_DIAMETER, TARGET_DIAMETER);
         }
@@ -214,6 +230,7 @@ public class IngameController extends Controller {
 
     private void handleRoll(ActionEvent actionEvent) {
         Player activePlayer = this.gameService.getGame().getActivePlayer();
+
         if (this.gameService.getGame().getPhase().equals(Phase.preGame)) {
             this.gameService.findStartingPlayer(activePlayer);
             activePlayer = this.gameService.getGame().getActivePlayer();
@@ -221,7 +238,9 @@ public class IngameController extends Controller {
         } else if (this.gameService.getGame().getPhase().equals(Phase.rolling)) {
             this.gameService.roll(activePlayer);
         }
+
         lastRoll.setText("" + gameService.getGame().getRoll());
+
         drawMap();
     }
 
@@ -238,7 +257,7 @@ public class IngameController extends Controller {
                             || (gameService.findDestination(piece.getOwner().getStart().getPiece()).getPiece() != null
                             && gameService.findDestination(piece.getOwner().getStart().getPiece()).getPiece()
                             .getOwner() == piece.getOwner())
-                    || piece.getOwner().getStart().getPiece().equals(piece)) {
+                            || piece.getOwner().getStart().getPiece().equals(piece)) {
                         drawHover(piece);
                         gameService.getGame().setHoveredPiece(piece);
                     }
@@ -246,7 +265,9 @@ public class IngameController extends Controller {
                 } else if (gameService.getGame().getHoveredPiece() != null
                         && gameService.getGame().getHoveredPiece().equals(piece)) {
                     position = gameService.findDestination(piece);
-                    if (position == null) {continue;}
+                    if (position == null) {
+                        continue;
+                    }
                     if (position.getX() <= x && x <= position.getX() + FIELD_DIAMETER
                             && position.getY() <= y && y <= position.getY() + FIELD_DIAMETER) {
                         boolean moved = gameService.movePiece(piece);

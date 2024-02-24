@@ -5,7 +5,7 @@ import de.uniks.pmws2324.ludo.model.*;
 
 import java.util.*;
 
-import static de.uniks.pmws2324.ludo.Constants.FIELD_OFFSET;
+import static de.uniks.pmws2324.ludo.Constants.*;
 
 public class GameService {
     private final Random rnGenerator;
@@ -25,7 +25,24 @@ public class GameService {
     }
 
     public boolean initGame(String firstName, String secondName, String thirdName, String fourthName) {
-        game = new Game();
+        if (this.game != null) {
+            this.game.removeYou();
+            this.game = null;
+
+            for (Field field : this.fields) {
+                field.removeYou();
+            }
+            fields.clear();
+
+            for (Player player : this.players) {
+                player.removeYou();
+            }
+            players.clear();
+
+            preGameRolls.clear();
+        }
+
+        this.game = new Game();
         createPlayer(firstName);
         createPlayer(secondName);
         createPlayer(thirdName);
@@ -43,22 +60,6 @@ public class GameService {
         return true;
     }
 
-    public void findStartingPlayer(Player player) {
-        game.setRoll(rnGenerator.nextInt(1, 7));
-        preGameRolls.put(player, game.getRoll());
-        setNextPlayer();
-        if (preGameRolls.size() == players.size()) {
-            int highest = 0;
-            for (Map.Entry<Player, Integer> entry : preGameRolls.entrySet()) {
-                if (entry.getValue() > highest) {
-                    highest = entry.getValue();
-                    game.setActivePlayer(entry.getKey());
-                }
-            }
-            game.setPhase(Phase.rolling);
-        }
-    }
-
     public void roll(Player activePlayer) {
         game.setRoll(rnGenerator.nextInt(1, 7));
         boolean movedOut = false;
@@ -71,24 +72,6 @@ public class GameService {
             game.setGoAgain(false);
             setNextPlayer();
         }
-    }
-
-    private boolean moveOut(Player activePlayer) {
-        for (OutField outField : activePlayer.getOutFields()) {
-            if (outField.getPiece() != null) {
-                if (activePlayer.getStart().getPiece() == null) {
-                    outField.getPiece().setPosition(activePlayer.getStart());
-                    return true;
-                } else if (activePlayer.getStart().getPiece().getOwner() != activePlayer) {
-                    kick(activePlayer.getStart().getPiece());
-                    outField.getPiece().setPosition(activePlayer.getStart());
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        return false;
     }
 
     public boolean movePiece(Piece piece) {
@@ -120,14 +103,38 @@ public class GameService {
         }
     }
 
-
-    public boolean checkEmptyOut(Player player) {
-        for (OutField outField : player.getOutFields()) {
+    private boolean moveOut(Player activePlayer) {
+        for (OutField outField : activePlayer.getOutFields()) {
             if (outField.getPiece() != null) {
-                return false;
+                if (activePlayer.getStart().getPiece() == null) {
+                    outField.getPiece().setPosition(activePlayer.getStart());
+                    return true;
+                } else if (activePlayer.getStart().getPiece().getOwner() != activePlayer) {
+                    kick(activePlayer.getStart().getPiece());
+                    outField.getPiece().setPosition(activePlayer.getStart());
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
-        return true;
+        return false;
+    }
+
+    public void findStartingPlayer(Player player) {
+        game.setRoll(rnGenerator.nextInt(1, 7));
+        preGameRolls.put(player, game.getRoll());
+        setNextPlayer();
+        if (preGameRolls.size() == players.size()) {
+            int highest = 0;
+            for (Map.Entry<Player, Integer> entry : preGameRolls.entrySet()) {
+                if (entry.getValue() > highest) {
+                    highest = entry.getValue();
+                    game.setActivePlayer(entry.getKey());
+                }
+            }
+            game.setPhase(Phase.rolling);
+        }
     }
 
     //------------------------ HELPERS ---------------------------------
@@ -170,6 +177,29 @@ public class GameService {
         return destination;
     }
 
+    public void setNextPlayer() {
+        int currentPlayerIndex = 0;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).equals(game.getActivePlayer())) {
+                currentPlayerIndex = i;
+            }
+        }
+        if (currentPlayerIndex == players.size() - 1) {
+            game.setActivePlayer(players.get(0));
+        } else {
+            game.setActivePlayer(players.get(currentPlayerIndex + 1));
+        }
+    }
+
+    public boolean checkEmptyOut(Player player) {
+        for (OutField outField : player.getOutFields()) {
+            if (outField.getPiece() != null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void createPlayer(String playerName) {
         if (!playerName.isEmpty()) {
             Player player = new Player()
@@ -186,8 +216,11 @@ public class GameService {
         int previousX = Constants.START_COORDINATE_X;
         int previousY = Constants.START_COORDINATE_Y;
         fields.add(startField);
+
         previousX += FIELD_OFFSET;
         previousField = createField(previousX, previousY, previousField);
+
+        // create home for green
         for (int i = 1; i < 5; i++) {
             HomeField currentHomefield = new HomeField().setColor(1);
             currentHomefield.setX(previousX);
@@ -200,6 +233,8 @@ public class GameService {
             fields.add(currentHomefield);
         }
         previousSpecialField = null;
+
+        // create green start
         previousX += FIELD_OFFSET;
         Field currentField = new Start()
                 .setPlayer(players.get(0))
@@ -209,14 +244,18 @@ public class GameService {
                 .setPrevious(previousField);
         previousField = currentField;
         fields.add(currentField);
+
         for (int i = 0; i < 4; i++) {
             previousY += FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
         for (int i = 0; i < 4; i++) {
             previousX += FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
+        // create home for red
         previousY += FIELD_OFFSET;
         previousField = createField(previousX, previousY, previousField);
         for (int i = 1; i < 5; i++) {
@@ -231,6 +270,8 @@ public class GameService {
             fields.add(currentHomeField);
         }
         previousSpecialField = null;
+
+        // create start for red
         previousY += FIELD_OFFSET;
         currentField = new Start()
                 .setPlayer(players.get(1))
@@ -238,8 +279,9 @@ public class GameService {
                 .setX(previousX)
                 .setY(previousY)
                 .setPrevious(previousField);
-        fields.add(currentField);
         previousField = currentField;
+        fields.add(currentField);
+
         for (int i = 0; i < 4; i++) {
             previousX -= FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
@@ -248,8 +290,11 @@ public class GameService {
             previousY += FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
         previousX -= FIELD_OFFSET;
         previousField = createField(previousX, previousY, previousField);
+
+        // create home for black
         for (int i = 1; i < 5; i++) {
             HomeField currentHomeField = new HomeField().setColor(3);
             currentHomeField.setX(previousX);
@@ -263,6 +308,8 @@ public class GameService {
             fields.add(currentHomeField);
         }
         previousSpecialField = null;
+
+        // create black start
         previousX -= FIELD_OFFSET;
         currentField = new Start()
                 .setColor(3)
@@ -274,16 +321,21 @@ public class GameService {
         }
         previousField = currentField;
         fields.add(currentField);
+
         for (int i = 0; i < 4; i++) {
             previousY -= FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
         for (int i = 0; i < 4; i++) {
             previousX -= FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
         previousY -= FIELD_OFFSET;
         previousField = createField(previousX, previousY, previousField);
+
+        // create home for yellow
         for (int i = 1; i < 5; i++) {
             HomeField currentHomeField = new HomeField().setColor(4);
             currentHomeField.setX(previousX + i * FIELD_OFFSET);
@@ -296,6 +348,8 @@ public class GameService {
             previousSpecialField = currentHomeField;
             fields.add(currentHomeField);
         }
+
+        // create yellow start
         previousY -= FIELD_OFFSET;
         currentField = new Start()
                 .setColor(4)
@@ -307,20 +361,34 @@ public class GameService {
         }
         fields.add(currentField);
         previousField = currentField;
+
         for (int i = 0; i < 4; i++) {
             previousX += FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
         for (int i = 0; i < 3; i++) {
             previousY -= FIELD_OFFSET;
             previousField = createField(previousX, previousY, previousField);
         }
+
+        // link last field with first field
         startField.setPrevious(previousField);
+    }
+
+    private Field createField(int x, int y, Field previousField) {
+        Field field = new Field()
+                .setX(x)
+                .setY(y)
+                .setPrevious(previousField);
+        fields.add(field);
+        return field;
     }
 
     private void generateOuts() {
         createOutsForPlayer(players.get(0), 1, Constants.PLAYER_ONE_OUT_X, Constants.PLAYER_ONE_OUT_Y);
         createOutsForPlayer(players.get(1), 2, Constants.PLAYER_TWO_OUT_X, Constants.PLAYER_TWO_OUT_Y);
+
         if (players.size() > 2) {
             createOutsForPlayer(players.get(2), 3, Constants.PLAYER_THREE_OUT_X, Constants.PLAYER_THREE_OUT_Y);
             if (players.size() > 3) {
@@ -356,15 +424,6 @@ public class GameService {
         return field;
     }
 
-    private Field createField(int x, int y, Field previousField) {
-        Field field = new Field()
-                .setX(x)
-                .setY(y)
-                .setPrevious(previousField);
-        fields.add(field);
-        return field;
-    }
-
     private void generatePieces() {
         for (int i = 1; i < players.size() + 1; i++) {
             Player player = players.get(i - 1);
@@ -375,20 +434,6 @@ public class GameService {
                         .setColor(i)
                 );
             }
-        }
-    }
-
-    public void setNextPlayer() {
-        int currentPlayerIndex = 0;
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).equals(game.getActivePlayer())) {
-                currentPlayerIndex = i;
-            }
-        }
-        if (currentPlayerIndex == players.size() - 1) {
-            game.setActivePlayer(players.get(0));
-        } else {
-            game.setActivePlayer(players.get(currentPlayerIndex + 1));
         }
     }
 
@@ -425,6 +470,7 @@ public class GameService {
                 return player;
             }
         }
+
         return null;
     }
 

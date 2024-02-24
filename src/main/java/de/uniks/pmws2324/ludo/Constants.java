@@ -1,6 +1,7 @@
 package de.uniks.pmws2324.ludo;
 
 public class Constants {
+
     // FIELDS
     public static final int FIELD_DIAMETER = 35;
     public static final int FIELD_OFFSET = 50;
