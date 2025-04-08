@@ -1,4 +1,6 @@
 package de.uniks.pmws2324.ludo.model;
+import java.awt.Color;
+import java.util.Objects;
 
 public class HomeField extends Field
 {

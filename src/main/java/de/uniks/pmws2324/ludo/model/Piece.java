@@ -1,17 +1,19 @@
 package de.uniks.pmws2324.ludo.model;
 import java.beans.PropertyChangeSupport;
+import java.awt.Color;
+import java.util.Objects;
 
 public class Piece
 {
    public static final String PROPERTY_OWNER = "owner";
    public static final String PROPERTY_POSITION = "position";
-   public static final String PROPERTY_COLOR = "color";
    public static final String PROPERTY_HOVERED = "hovered";
+   public static final String PROPERTY_COLOR = "color";
    private Player owner;
    private Field position;
    protected PropertyChangeSupport listeners;
-   private int color;
    private Game hovered;
+   private int color;
 
    public Player getOwner()
    {
@@ -67,24 +69,6 @@ public class Piece
       return this;
    }
 
-   public int getColor()
-   {
-      return this.color;
-   }
-
-   public Piece setColor(int value)
-   {
-      if (value == this.color)
-      {
-         return this;
-      }
-
-      final int oldValue = this.color;
-      this.color = value;
-      this.firePropertyChange(PROPERTY_COLOR, oldValue, value);
-      return this;
-   }
-
    public Game getHovered()
    {
       return this.hovered;
@@ -109,6 +93,24 @@ public class Piece
          value.setHoveredPiece(this);
       }
       this.firePropertyChange(PROPERTY_HOVERED, oldValue, value);
+      return this;
+   }
+
+   public int getColor()
+   {
+      return this.color;
+   }
+
+   public Piece setColor(int value)
+   {
+      if (value == this.color)
+      {
+         return this;
+      }
+
+      final int oldValue = this.color;
+      this.color = value;
+      this.firePropertyChange(PROPERTY_COLOR, oldValue, value);
       return this;
    }
 
